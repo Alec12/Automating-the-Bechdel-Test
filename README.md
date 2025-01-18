@@ -14,15 +14,15 @@ In order to pass the Bechdel Test, three criteria must be met; (1) the piece of 
 
 In this paper, we build off of the work of Agarwal et al. (2015) in automating the Bechdel Test, specifically as it is applied to movie scripts. We first built a baseline model by replicating the work of Umairican (2014) and obtained an accuracy score of 0.558 and an F1 score of 0.558. Our goal for this paper is to build an automatic Bechdel test that will achieve higher accuracy and F1 while overcoming the challenges of applying transformer models to long document sizes of screenplays. With the advancement of language models, we approach the goal of creating an automatic Bechdel test by first utilising transformer based models and then a character coreference approach.
 
-Our full paper can be found [here](https://github.com/Alec12/Automating-the-Bechdel-Test/Automatic%20Bechdel.pdf)
+Our full paper can be found [here](https://github.com/Alec12/Automating-the-Bechdel-Test/blob/main/Automatic%20Bechdel.pdf)
 
 The Bechdel test was originally created by Alison Bechdel. It appeared in a comic stop titled "The Rule" that was published in 1985. A great article on the test can be found [here](https://lithub.com/read-the-1985-comic-strip-that-inspired-the-bechdel-test/).
 
 
 
-In the [coref_submit folder](https://github.com/Alec12/Automating-the-Bechdel-Test/coref_submit) is the code for the Co-Reference Resolution approach, specifically in [this notebook](https://github.com/Alec12/Automating-the-Bechdel-Test/241113_experiment.ipynb).
+In the [coref_submit folder](https://github.com/Alec12/Automating-the-Bechdel-Test/tree/main/coref_submit) is the code for the Co-Reference Resolution approach, specifically in [this notebook](https://github.com/Alec12/Automating-the-Bechdel-Test/241113_experiment.ipynb).
 
-In the [screenplayparser folder](https://github.com/Alec12/Automating-the-Bechdel-Test/screenplayparser), you can find the raw files for parsing screenplays. To run them, use [parser_run.ipynb](https://github.com/Alec12/Automating-the-Bechdel-Test/parser_run.ipynb)
+In the [screenplayparser folder](https://github.com/Alec12/Automating-the-Bechdel-Test/screenplayparser), you can find the raw files for parsing screenplays. To run them, use [parser_run.ipynb](https://github.com/Alec12/Automating-the-Bechdel-Test/blob/main/parser_run.ipynb)
 
 Source for raw dataset - [Link](https://huggingface.co/datasets/mocboch/movie_scripts/tree/main)
 
