@@ -1,16 +1,29 @@
 # Character Coreference Resolution in Movie Screenplays
 
-This repository contains the source code and data for training a coreference resolution model for characters in movie
-screenplays.
+## Introduction
 
-The work has been accepted to ACL Findings 2023.
-You can read the paper 
-[Character Coreference Resolution in Movie Screenplays](https://aclanthology.org/2023.findings-acl.654/)
-to get more details. <br>
-This builds upon our prior work in 
-[Annotation and Evaluation of Coreference Resolution in Screenplays](https://aclanthology.org/2021.findings-acl.176/).
+This repository contains the source code and data for training a coreference resolution model designed to identify character references in movie screenplays, enabling automated scoring for the Bechdel Test. The approach builds on the research of Baruah and Narayanan (2023), who adapted Dobrovolskii’s (2021) word-level coreference resolution model to the unique challenges of screenplay formats, including handling long document sizes.
 
-## Data
+### How It Works
+The model operates by encoding tokens into word representations using a pretrained RoBERTa transformer model, augmented with features such as part-of-speech tags, named entities, and screenplay structural tags. A bi-directional RNN generates hidden layer vectors, which are fed into a feed-forward neural network to compute character and antecedent scores for each word representation. Overlapping subdocuments (maximum 5,120 tokens with 2,048-token overlaps) are used to process long screenplays, ensuring continuity of coreference clusters across sections. If an antecedent pair exists in overlapping regions, scores are averaged for consistency.
+
+### Bechdel Test Scoring
+Using the trained model, coreference resolution is applied to identify character references within screenplay dialogue. By analyzing these references, the model determines conversations between women and evaluates their topics to automate the three criteria of the Bechdel Test:
+1. Presence of two women in a conversation.
+2. The conversation is not about a man.
+3. At least one scene meets these criteria for the screenplay to pass.
+
+Pretrained weights fine-tuned on six scripts are utilized to perform inference, efficiently handling new datasets while maintaining high accuracy. Scenes are parsed to identify dialogue participants, topics, and coreference-identified entities, allowing detailed scoring for Bechdel compliance.
+
+### Key Points
+- **Fusion-Based Coreference Modeling:** Adapts long screenplays into smaller subdocuments for accurate and efficient processing, with continuity ensured through overlapping token regions.
+- **Structural and Semantic Analysis:** Integrates screenplay structural tags with advanced character identification to capture nuanced interactions within scenes.
+- **Automated Scoring Heuristics:** Combines model predictions with rule-based criteria to evaluate Bechdel compliance at a granular level, assigning passing scores where applicable.
+
+This approach provides a scalable, efficient, and interpretable solution for automating Bechdel Test scoring in movie screenplays, addressing challenges of document length and complex character relationships.
+
+
+## Training Data
 
 The __MovieCoref__ corpus is saved to the [data](data/) directory.
 
@@ -28,26 +41,6 @@ are JSON-preprocessed versions of the __MovieCoref__ corpus, which are more conv
 - The _regular_ version does not make any changes.
 
 We recommend using the _regular_ version.
-
-## Training
-
-### Set up
-
-Create a python 3 conda environment from the `env.yml` file.
-
-```
-conda env create --file env.yml
-```
-
-### Inter-rater Agreement
-
-Find the interrater agreement of the annotators that labeled the __MovieCoref__ corpus.
-The annotations on the validation set used to calculate the interrater agreement scores can be found in the 
-[data/validation](data/validation/) directory.
-
-```
-python rater.py
-```
 
 ### Training
 
@@ -101,63 +94,46 @@ All details of these hyperparameters can be found in the paper.
 
 Default values of SUBDOC_LEN, OVERLAP_LEN, and REPK are 5120, 2048, and 3.
 
-## Citation
+## Inference
 
-Please cite the following papers if you use our work.
+To perform inference for automating the Bechdel Test, follow the steps below to set up the environment and run the necessary processes:  
 
-#### Character Coreference Resolution in Movie Screenplays
-```
-Sabyasachee Baruah and Shrikanth Narayanan. 2023. Character Coreference Resolution in Movie Screenplays.
-In Findings of the Association for Computational Linguistics: ACL 2023, pages 10300–10313, Toronto, Canada.
-Association for Computational Linguistics.
-```
+### 1. Set Up Your Environment  
 
-The bibtex is:
-```bibtex
-@inproceedings{baruah-narayanan-2023-character,
-    title = "Character Coreference Resolution in Movie Screenplays",
-    author = "Baruah, Sabyasachee  and
-      Narayanan, Shrikanth",
-    editor = "Rogers, Anna  and
-      Boyd-Graber, Jordan  and
-      Okazaki, Naoaki",
-    booktitle = "Findings of the Association for Computational Linguistics: ACL 2023",
-    month = jul,
-    year = "2023",
-    address = "Toronto, Canada",
-    publisher = "Association for Computational Linguistics",
-    url = "https://aclanthology.org/2023.findings-acl.654",
-    doi = "10.18653/v1/2023.findings-acl.654",
-    pages = "10300--10313",
-}
-```
+Ensure you have **Poetry** installed to manage dependencies. If you don’t already have it, you can install it by following the instructions on their [official website](https://python-poetry.org/docs/).  
 
-#### Annotation and Evaluation of Coreference Resolution in Screenplays
-```
-Sabyasachee Baruah, Sandeep Nallan Chakravarthula, and Shrikanth Narayanan. 2021. 
-Annotation and Evaluation of Coreference Resolution in Screenplays. 
-In Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021, pages 2004–2010, Online. 
-Association for Computational Linguistics.
-```
+Once installed, navigate to the project directory in your terminal and run:  
 
-The bibtex is:
-```bibtex
-@inproceedings{baruah-etal-2021-annotation,
-    title = "Annotation and Evaluation of Coreference Resolution in Screenplays",
-    author = "Baruah, Sabyasachee  and
-      Nallan Chakravarthula, Sandeep  and
-      Narayanan, Shrikanth",
-    editor = "Zong, Chengqing  and
-      Xia, Fei  and
-      Li, Wenjie  and
-      Navigli, Roberto",
-    booktitle = "Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021",
-    month = aug,
-    year = "2021",
-    address = "Online",
-    publisher = "Association for Computational Linguistics",
-    url = "https://aclanthology.org/2021.findings-acl.176",
-    doi = "10.18653/v1/2021.findings-acl.176",
-    pages = "2004--2010",
-}
-```
+```bash
+poetry install
+```  
+
+This will create a virtual environment and install all the required dependencies listed in the `pyproject.toml` file.  
+
+### 2. Run the Inference Notebook  
+
+The inference process is outlined in the **`241113_experiment.ipynb`** notebook. This notebook provides:  
+- **Steps taken** for setting up the automated pipeline for Bechdel Test inference using coreference resolution.  
+- Guidance for loading the trained model and required data.  
+- Code for preprocessing input data, running predictions, and analyzing results.  
+
+To open the notebook, run the following command:  
+
+```bash
+poetry run jupyter notebook
+```  
+
+Then, navigate to the `241113_experiment.ipynb` file in your browser and follow the documented steps.  
+
+### 3. Input and Output Details  
+
+- **Input:** The notebook expects movie scripts or text files formatted according to the requirements specified in the preprocessing section. Please use `coref_submit/export_pipeline.py` for utility functions to transform movie scripts into the proper format before inference.
+- **Output:** The model will predict whether a given movie script passes the Bechdel Test based on its trained architecture. Results will include a binary prediction (`1` for pass, `0` for fail).  
+
+### 4. Additional Notes  
+
+- If you encounter any issues with dependencies or execution, ensure your Poetry environment is active by running:  
+  ```bash
+  poetry shell
+  ```  
+- Refer to the `README.md` or the notebook for troubleshooting common errors.  
