@@ -22,6 +22,8 @@ The Bechdel test was originally created by Alison Bechdel. It appeared in a comi
 
 [Co-Reference Resolution Approach](https://github.com/Alec12/Automating-the-Bechdel-Test/tree/main/coreference_resolution_model) 
 
+[BERT Base Chunking Approach](https://github.com/Alec12/Automating-the-Bechdel-Test/blob/main/chunkBertBase.ipynb)
+
 [Screenplay Parser Folder](https://github.com/Alec12/Automating-the-Bechdel-Test/screenplayparser)
     - To run available raw file for parsing screenplays, use [parser_run.ipynb](https://github.com/Alec12/Automating-the-Bechdel-Test/blob/main/parser_run.ipynb)
 
