@@ -127,7 +127,7 @@ Then, navigate to the `241113_experiment.ipynb` file in your browser and follow 
 
 ### 3. Input and Output Details  
 
-- **Input:** The notebook expects movie scripts or text files formatted according to the requirements specified in the preprocessing section. Please use `coref_submit/export_pipeline.py` for utility functions to transform movie scripts into the proper format before inference.
+- **Input:** The notebook expects movie scripts or text files formatted according to the requirements specified in the preprocessing section. Please use `coreference_resolution_model/export_pipeline.py` for utility functions to transform movie scripts into the proper format before inference.
 - **Output:** The model will predict whether a given movie script passes the Bechdel Test based on its trained architecture. Results will include a binary prediction (`1` for pass, `0` for fail).  
 
 ### 4. Additional Notes  
